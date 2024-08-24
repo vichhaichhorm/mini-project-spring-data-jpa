@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: demo-spring-mini-project
+  datasource:
+    url: jdbc:postgresql://localhost:5432/spring_mini_project_db
+    username: postgres
+    password: 2003
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    database: postgresql
+    properties:
+      hibernate:
+        format_sql: true
