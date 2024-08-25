@@ -2,6 +2,7 @@ package com.spring.mini.project.demo.spring.mini.project.service;
 
 import com.spring.mini.project.demo.spring.mini.project.dto.Authentication.dtoAuthRequest.DTORegisterRequest;
 import com.spring.mini.project.demo.spring.mini.project.dto.Authentication.dtoAuthResponse.DTORegisterResponse;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 
@@ -9,4 +10,9 @@ import org.springframework.stereotype.Service;
 public interface UserService extends UserDetailsService {
     DTORegisterResponse registerUser(DTORegisterRequest dtoRegisterRequest) throws Exception;
 
+    UserDetails getAuthenticatedUser();
+
+//    DTORegisterResponse updateCurrentUser(DTORegisterRequest dtoRegisterRequest);
+
+//    DTORegisterResponse updateCurrentUser(DTORegisterRequest dtoRegisterRequest) ;
 }

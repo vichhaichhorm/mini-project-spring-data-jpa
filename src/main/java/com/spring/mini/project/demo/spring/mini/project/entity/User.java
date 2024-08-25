@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Setter
 @Getter
@@ -31,12 +32,20 @@ public class User implements UserDetails {
     private String password;
     private String address;
     private String phoneNumber;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime createdAt;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Article> articles;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Comment> comments;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -72,6 +81,4 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-
-
 }
