@@ -86,10 +86,33 @@ public class AuthenticationController {
     }
 
 
-
+    //    @PostMapping("/register")
+//    public ResponseEntity<DTORegisterResponse> registerUser(@RequestBody DTORegisterRequest dtoRegisterRequest) throws Exception {
+//        return ResponseEntity.ok(userService.registerUser(dtoRegisterRequest));
+//    }
     @PostMapping("/register")
-    public ResponseEntity<DTORegisterResponse> registerUser(@RequestBody DTORegisterRequest dtoRegisterRequest) throws Exception {
-        return ResponseEntity.ok(userService.registerUser(dtoRegisterRequest));
+    public ResponseEntity<APIResponse<Object>> registerUser(@RequestBody DTORegisterRequest dtoRegisterRequest) throws Exception {
+        try {
+            DTORegisterResponse registerResponse = userService.registerUser(dtoRegisterRequest);
+
+            APIResponse<Object> apiResponse = APIResponse.builder()
+                    .message("User registered successfully.")
+                    .payload(registerResponse)
+                    .status(HttpStatus.CREATED)
+                    .time(LocalDateTime.now())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
+        } catch (Exception e) {
+            APIResponse<Object> apiResponse = APIResponse.builder()
+                    .message("User registration failed: " + e.getMessage())
+                    .status(HttpStatus.BAD_REQUEST)
+                    .time(LocalDateTime.now())
+                    .build();
+
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
+        }
     }
+
 
 }
