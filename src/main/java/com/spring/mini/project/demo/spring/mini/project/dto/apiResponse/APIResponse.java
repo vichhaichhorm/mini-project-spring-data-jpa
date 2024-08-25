@@ -11,8 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Builder
 public class APIResponse <T>{
+    private HttpStatus status;
     private String message;
     private T payload;
-    private HttpStatus status;
     private LocalDateTime time;
 }

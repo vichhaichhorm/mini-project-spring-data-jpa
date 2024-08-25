@@ -43,15 +43,6 @@ public class AuthenticationController {
         }
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<DTOLoginResponse> authenticate(@RequestBody DTOLoginRequest dtoLoginRequest) throws Exception {
-//        authenticate(dtoLoginRequest.getEmail(), dtoLoginRequest.getPassword());
-//        final UserDetails userDetails = userService.loadUserByUsername(dtoLoginRequest.getEmail());
-//        final String token = jwtService.generateToken(userDetails);
-//        DTOLoginResponse authResponse = new DTOLoginResponse(token);
-//        return ResponseEntity.ok(authResponse);
-//    }
-
     @PostMapping("/login")
     public ResponseEntity<APIResponse<Object>> authenticate(@RequestBody DTOLoginRequest dtoLoginRequest) {
         try {
@@ -61,58 +52,51 @@ public class AuthenticationController {
 
             DTOLoginResponse authResponse = new DTOLoginResponse(token);
             APIResponse<Object> apiResponse = APIResponse.builder()
-                    .message("Login successful.")
+                    .status(HttpStatus.OK)
+                    .message("You have logged in to the system successfully.")
                     .payload(authResponse)
-                    .status(HttpStatus.CREATED)
                     .time(LocalDateTime.now())
                     .build();
 
             return ResponseEntity.ok(apiResponse);
         } catch (UsernameNotFoundException e) {
             APIResponse<Object> apiResponse = APIResponse.builder()
-                    .message("User not found with email: " + dtoLoginRequest.getEmail())
                     .status(HttpStatus.NOT_FOUND)
+                    .message("User not found with email: " + dtoLoginRequest.getEmail())
                     .time(LocalDateTime.now())
                     .build();
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(apiResponse);
         } catch (Exception e) {
             APIResponse<Object> apiResponse = APIResponse.builder()
-                    .message("Authentication failed.")
                     .status(HttpStatus.UNAUTHORIZED)
+                    .message("Authentication failed.")
                     .time(LocalDateTime.now())
                     .build();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(apiResponse);
         }
     }
 
-
-    //    @PostMapping("/register")
-//    public ResponseEntity<DTORegisterResponse> registerUser(@RequestBody DTORegisterRequest dtoRegisterRequest) throws Exception {
-//        return ResponseEntity.ok(userService.registerUser(dtoRegisterRequest));
-//    }
     @PostMapping("/register")
     public ResponseEntity<APIResponse<Object>> registerUser(@RequestBody DTORegisterRequest dtoRegisterRequest) throws Exception {
         try {
             DTORegisterResponse registerResponse = userService.registerUser(dtoRegisterRequest);
 
             APIResponse<Object> apiResponse = APIResponse.builder()
-                    .message("User registered successfully.")
-                    .payload(registerResponse)
                     .status(HttpStatus.CREATED)
+                    .message("Registered successfully.")
+                    .payload(registerResponse)
                     .time(LocalDateTime.now())
                     .build();
 
             return ResponseEntity.status(HttpStatus.CREATED).body(apiResponse);
         } catch (Exception e) {
             APIResponse<Object> apiResponse = APIResponse.builder()
-                    .message("User registration failed: " + e.getMessage())
                     .status(HttpStatus.BAD_REQUEST)
+                    .message("User registration failed: " + e.getMessage())
                     .time(LocalDateTime.now())
                     .build();
-
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiResponse);
         }
     }
-
 
 }
